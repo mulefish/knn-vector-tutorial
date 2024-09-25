@@ -3,7 +3,7 @@ import './styles.css';
 import useCards from './hooks/useCards';
 import useShuffle from './hooks/useShuffle';
 import useAceLogic from './hooks/useAceLogic';
-import { ChakraProvider, Box, Heading, VStack, Text, Button, Select, HStack } from '@chakra-ui/react';
+import { ChakraProvider, Box, Heading, VStack, Text, Button, Select, HStack, Flex } from '@chakra-ui/react';
 import Header from './Header.jsx';
 
 const App = () => {
@@ -38,15 +38,7 @@ useEffect(() => {
       resetBuckets(selectedColumns);
     }
   }, [selectedColumns]);
-/* 
-  const resetBuckets = (n) => {
-    const shuffledDeck = shuffleDeck(deck);
-    const newBuckets = Array.from({ length: n }, () => []);
-    setBuckets(newBuckets);
-    setRemainingDeck([...shuffledDeck]);
-    setAverages(new Array(n).fill(0));
-  };
-*/
+
 const resetBuckets = (n) => {
   const shuffledDeck = shuffleDeck(deck);
   const newBuckets = Array.from({ length: n }, () => []);
@@ -93,83 +85,6 @@ const resetBuckets = (n) => {
     return bucket.length > 0 ? (totalValue / bucket.length).toFixed(2) : 0;
   };
 
-  // const addNextRow = () => {
-  //   if (remainingDeck.length === 0) {
-  //     alert('No more cards to deal!');
-  //     return;
-  //   }
-
-  //   const updatedBuckets = [...buckets];
-  //   let bucketIndex = 0;
-
-  //   for (let i = 0; i < updatedBuckets.length; i++) {
-  //     if (remainingDeck.length > 0) {
-  //       const card = remainingDeck.shift();
-        
-  //       if (card.display.startsWith("A") && aceValues[card.display] === undefined && updatedBuckets[bucketIndex].length > 0) {
-  //         const currentAverage = averages[bucketIndex];
-  //         const aceValue = determineAceValue(currentAverage);
-  //         card.value = aceValue;
-  //         setAceValue(card.display, aceValue);
-  //       }
-
-  //       updatedBuckets[bucketIndex].push(card);
-  //       bucketIndex = (bucketIndex + 1) % updatedBuckets.length;
-  //     }
-  //   }
-
-  //   setBuckets(updatedBuckets);
-
-  //   const updatedAverages = updatedBuckets.map(bucket => calculateAverage(bucket));
-  //   setAverages(updatedAverages);
-  // };
-//   const addNextRow = () => {
-//     if (remainingDeck.length === 0) {
-//         alert('No more cards to deal!');
-//         return;
-//     }
-
-//     const updatedBuckets = [...buckets];
-
-//     // Process each card from the remaining deck
-//     while (remainingDeck.length > 0) {
-//         const card = remainingDeck.shift();
-        
-//         // Determine the card's value, especially for Ace
-//         let cardValue = card.value;
-//         if (card.display.startsWith("A")) {
-//             cardValue = aceValues[card.display] !== undefined ? aceValues[card.display] : 1;
-//         }
-
-//         // Find the bucket (column) whose average is closest to the card's value
-//         let closestBucketIndex = 0;
-//         let minDifference = Math.abs(averages[0] - cardValue);
-
-//         for (let i = 1; i < updatedBuckets.length; i++) {
-//             const difference = Math.abs(averages[i] - cardValue);
-//             if (difference < minDifference) {
-//                 closestBucketIndex = i;
-//                 minDifference = difference;
-//             }
-//         }
-
-//         // Push the card to the bucket with the closest average
-//         updatedBuckets[closestBucketIndex].push(card);
-
-//         // Recalculate the average for the affected bucket
-//         const newAverage = calculateAverage(updatedBuckets[closestBucketIndex]);
-//         const updatedAverages = [...averages];
-//         updatedAverages[closestBucketIndex] = newAverage;
-//         setAverages(updatedAverages);
-
-//         // If this card was an Ace, store its decided value
-//         if (card.display.startsWith("A") && aceValues[card.display] === undefined) {
-//             setAceValue(card.display, cardValue);
-//         }
-//     }
-
-//     setBuckets(updatedBuckets);
-// };
 
 const addNextRow = () => {
   if (remainingDeck.length === 0) {
@@ -230,87 +145,11 @@ const addNextRow = () => {
   };
 
   return (
-//     <ChakraProvider>
-//       <Header />
-//       <Box p={5}>
-//         <Heading mb={6}>Playing Cards Display</Heading>
-        
-//         {/* Use HStack to place elements on the same row */}
-//         <HStack spacing={4} mb={6} align="center">
-//           <Select 
-//             id="columnDropdown" 
-//             defaultValue="3" // Set default value to "3"
-//             width="200px"
-//           >
-//             <option value="3">3 dimensions</option>
-//             <option value="4">4 dimensions</option>
-//             <option value="5">5 dimensions</option>
-//             <option value="6">6 dimensions</option>
-//           </Select>
-          
-//           <Button colorScheme="green" onClick={handleConfirm}>
-//             Change number of dimensions
-//           </Button>
-          
-//           <Button colorScheme="blue" onClick={addNextRow} disabled={selectedColumns === null}>
-//             Add more observations
-//           </Button>
-
-//         </HStack>
-// {/* 
-//         <div className="card-grid">
-//           {buckets.map((bucket, index) => (
-//             <div key={index} className="card-column">
-//               <Text mb={2}>Average: {averages[index]}</Text>
-//               {bucket.map((card, idx) => (
-//                 <div 
-//                   key={idx}
-//                   className={`card ${card.display.includes("♥") || card.display.includes("♦") ? 'red' : 'black'}`}
-//                 >
-//                   <div className="card-value">{card.display}</div>
-//                 </div>
-//               ))}
-//             </div>
-//           ))}
-//         </div> */}
-
-
-// <div className="card-grid">
-//   {buckets.map((bucket, index) => (
-//     <div key={index} className="card-column">
-//       <Text mb={2}>Average: {averages[index]}</Text>
-//       {bucket.map((card, idx) => {
-//         // Determine the display for Ace cards with their suit
-//         let cardDisplay = card.display;
-//         if (card.display.startsWith("A")) {
-//           const suitSymbol = card.display.slice(1); // Extract the suit symbol (e.g., "♥", "♠", etc.)
-//           if (aceValues[card.display] !== undefined) {
-//             cardDisplay = `A  ${suitSymbol} ${aceValues[card.display]}`; // Show Ace with its assigned value and suit
-//           } else {
-//             cardDisplay = `A ${suitSymbol} ?`; // Show Ace as TBD with its suit if not yet determined
-//           }
-//         }
-
-//         return (
-//           <div
-//             key={idx}
-//             className={`card ${card.display.includes("♥") || card.display.includes("♦") ? 'red' : 'black'}`}
-//           >
-//             <div className="card-value">{cardDisplay}</div>
-//           </div>
-//         );
-//       })}
-//     </div>
-//   ))}
-// </div>
-
-//       </Box>
-//     </ChakraProvider>
 
 <ChakraProvider>
   <Header />
   <Box p={5}>
-    <Heading mb={6}>Playing Cards Display</Heading>
+    <Heading mb={6} fontSize="lg">KNN with a deck of cards</Heading>
     
     {/* Use HStack to place elements on the same row */}
     <HStack spacing={4} mb={6} align="center">
@@ -332,30 +171,35 @@ const addNextRow = () => {
       <Button colorScheme="blue" onClick={addNextRow} disabled={selectedColumns === null}>
         Add more observations
       </Button>
-      
-      {/* Display normalized vector */}
-      <Text ml={4} fontSize="lg">
-        Vector: [{normalizedVector.join(', ')}]
-      </Text>
     </HStack>
 
-    <div className="card-grid">
-      {buckets.map((bucket, index) => (
-        <div key={index} className="card-column">
-          <Text mb={2}>Average: {averages[index]}</Text>
-          {bucket.map((card, idx) => (
-            <div 
-              key={idx}
-              className={`card ${card.display.includes("♥") || card.display.includes("♦") ? 'red' : 'black'}`}
-            >
-              <div className="card-value">{card.display}</div>
-            </div>
-          ))}
-        </div>
-      ))}
-    </div>
+    {/* Use Flex to align the card grid and vector display */}
+    <Flex align="flex-start">
+      {/* Display normalized vector to the left of the columns */}
+      <Box mr={4} p={3} border="1px" borderColor="gray.300" borderRadius="md" boxShadow="md">
+        <Text fontWeight="bold" mb={2}>Normalized Vector:</Text>
+        <Text fontSize="sm">[{normalizedVector.join(', ')}]</Text>
+      </Box>
+
+      <div className="card-grid" style={{ flex: 1 }}>
+        {buckets.map((bucket, index) => (
+          <div key={index} className="card-column">
+            <Text mb={2}>Average: {averages[index]}</Text>
+            {bucket.map((card, idx) => (
+              <div 
+                key={idx}
+                className={`card ${card.display.includes("♥") || card.display.includes("♦") ? 'red' : 'black'}`}
+              >
+                <div className="card-value">{card.display}</div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </Flex>
   </Box>
 </ChakraProvider>
+
 
 
   );
