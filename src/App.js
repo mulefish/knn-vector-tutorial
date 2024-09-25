@@ -16,6 +16,18 @@ const App = () => {
   const [remainingDeck, setRemainingDeck] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState(3); // Set default columns to 3
 
+
+  const [normalizedVector, setNormalizedVector] = useState([]);
+
+// Update useEffect to calculate the normalized vector whenever the averages change
+useEffect(() => {
+    if (averages.length > 0) {
+        const normalized = averages.map(avg => ((avg - 1) / (14 - 1)).toFixed(3));
+        setNormalizedVector(normalized);
+    }
+}, [averages]);
+
+
   // Initialize the buckets and UI immediately on component mount
   useEffect(() => {
     resetBuckets(selectedColumns);
@@ -218,81 +230,134 @@ const addNextRow = () => {
   };
 
   return (
-    <ChakraProvider>
-      <Header />
-      <Box p={5}>
-        <Heading mb={6}>Playing Cards Display</Heading>
+//     <ChakraProvider>
+//       <Header />
+//       <Box p={5}>
+//         <Heading mb={6}>Playing Cards Display</Heading>
         
-        {/* Use HStack to place elements on the same row */}
-        <HStack spacing={4} mb={6} align="center">
-          <Select 
-            id="columnDropdown" 
-            defaultValue="3" // Set default value to "3"
-            width="200px"
-          >
-            <option value="3">3 dimensions</option>
-            <option value="4">4 dimensions</option>
-            <option value="5">5 dimensions</option>
-            <option value="6">6 dimensions</option>
-          </Select>
+//         {/* Use HStack to place elements on the same row */}
+//         <HStack spacing={4} mb={6} align="center">
+//           <Select 
+//             id="columnDropdown" 
+//             defaultValue="3" // Set default value to "3"
+//             width="200px"
+//           >
+//             <option value="3">3 dimensions</option>
+//             <option value="4">4 dimensions</option>
+//             <option value="5">5 dimensions</option>
+//             <option value="6">6 dimensions</option>
+//           </Select>
           
-          <Button colorScheme="green" onClick={handleConfirm}>
-            Change number of dimensions
-          </Button>
+//           <Button colorScheme="green" onClick={handleConfirm}>
+//             Change number of dimensions
+//           </Button>
           
-          <Button colorScheme="blue" onClick={addNextRow} disabled={selectedColumns === null}>
-            Add more observations
-          </Button>
-        </HStack>
-{/* 
-        <div className="card-grid">
-          {buckets.map((bucket, index) => (
-            <div key={index} className="card-column">
-              <Text mb={2}>Average: {averages[index]}</Text>
-              {bucket.map((card, idx) => (
-                <div 
-                  key={idx}
-                  className={`card ${card.display.includes("♥") || card.display.includes("♦") ? 'red' : 'black'}`}
-                >
-                  <div className="card-value">{card.display}</div>
-                </div>
-              ))}
+//           <Button colorScheme="blue" onClick={addNextRow} disabled={selectedColumns === null}>
+//             Add more observations
+//           </Button>
+
+//         </HStack>
+// {/* 
+//         <div className="card-grid">
+//           {buckets.map((bucket, index) => (
+//             <div key={index} className="card-column">
+//               <Text mb={2}>Average: {averages[index]}</Text>
+//               {bucket.map((card, idx) => (
+//                 <div 
+//                   key={idx}
+//                   className={`card ${card.display.includes("♥") || card.display.includes("♦") ? 'red' : 'black'}`}
+//                 >
+//                   <div className="card-value">{card.display}</div>
+//                 </div>
+//               ))}
+//             </div>
+//           ))}
+//         </div> */}
+
+
+// <div className="card-grid">
+//   {buckets.map((bucket, index) => (
+//     <div key={index} className="card-column">
+//       <Text mb={2}>Average: {averages[index]}</Text>
+//       {bucket.map((card, idx) => {
+//         // Determine the display for Ace cards with their suit
+//         let cardDisplay = card.display;
+//         if (card.display.startsWith("A")) {
+//           const suitSymbol = card.display.slice(1); // Extract the suit symbol (e.g., "♥", "♠", etc.)
+//           if (aceValues[card.display] !== undefined) {
+//             cardDisplay = `A  ${suitSymbol} ${aceValues[card.display]}`; // Show Ace with its assigned value and suit
+//           } else {
+//             cardDisplay = `A ${suitSymbol} ?`; // Show Ace as TBD with its suit if not yet determined
+//           }
+//         }
+
+//         return (
+//           <div
+//             key={idx}
+//             className={`card ${card.display.includes("♥") || card.display.includes("♦") ? 'red' : 'black'}`}
+//           >
+//             <div className="card-value">{cardDisplay}</div>
+//           </div>
+//         );
+//       })}
+//     </div>
+//   ))}
+// </div>
+
+//       </Box>
+//     </ChakraProvider>
+
+<ChakraProvider>
+  <Header />
+  <Box p={5}>
+    <Heading mb={6}>Playing Cards Display</Heading>
+    
+    {/* Use HStack to place elements on the same row */}
+    <HStack spacing={4} mb={6} align="center">
+      <Select 
+        id="columnDropdown" 
+        defaultValue="3" // Set default value to "3"
+        width="200px"
+      >
+        <option value="3">3 dimensions</option>
+        <option value="4">4 dimensions</option>
+        <option value="5">5 dimensions</option>
+        <option value="6">6 dimensions</option>
+      </Select>
+      
+      <Button colorScheme="green" onClick={handleConfirm}>
+        Change number of dimensions
+      </Button>
+      
+      <Button colorScheme="blue" onClick={addNextRow} disabled={selectedColumns === null}>
+        Add more observations
+      </Button>
+      
+      {/* Display normalized vector */}
+      <Text ml={4} fontSize="lg">
+        Vector: [{normalizedVector.join(', ')}]
+      </Text>
+    </HStack>
+
+    <div className="card-grid">
+      {buckets.map((bucket, index) => (
+        <div key={index} className="card-column">
+          <Text mb={2}>Average: {averages[index]}</Text>
+          {bucket.map((card, idx) => (
+            <div 
+              key={idx}
+              className={`card ${card.display.includes("♥") || card.display.includes("♦") ? 'red' : 'black'}`}
+            >
+              <div className="card-value">{card.display}</div>
             </div>
           ))}
-        </div> */}
-
-
-<div className="card-grid">
-  {buckets.map((bucket, index) => (
-    <div key={index} className="card-column">
-      <Text mb={2}>Average: {averages[index]}</Text>
-      {bucket.map((card, idx) => {
-        // Determine the display for Ace cards with their suit
-        let cardDisplay = card.display;
-        if (card.display.startsWith("A")) {
-          const suitSymbol = card.display.slice(1); // Extract the suit symbol (e.g., "♥", "♠", etc.)
-          if (aceValues[card.display] !== undefined) {
-            cardDisplay = `A  ${suitSymbol} ${aceValues[card.display]}`; // Show Ace with its assigned value and suit
-          } else {
-            cardDisplay = `A ${suitSymbol} ?`; // Show Ace as TBD with its suit if not yet determined
-          }
-        }
-
-        return (
-          <div
-            key={idx}
-            className={`card ${card.display.includes("♥") || card.display.includes("♦") ? 'red' : 'black'}`}
-          >
-            <div className="card-value">{cardDisplay}</div>
-          </div>
-        );
-      })}
+        </div>
+      ))}
     </div>
-  ))}
-</div>
+  </Box>
+</ChakraProvider>
 
-      </Box>
-    </ChakraProvider>
+
   );
 };
 
