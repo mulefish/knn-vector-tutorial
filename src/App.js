@@ -86,56 +86,90 @@ const resetBuckets = (n) => {
   };
 
 
+// const addNextRow = () => {
+//   if (remainingDeck.length === 0) {
+//       alert('No more cards to deal!');
+//       return;
+//   }
+
+//   const updatedBuckets = [...buckets];
+//   let cardsToDraw = selectedColumns; // Number of cards to draw based on the dropdown selection
+
+//   while (cardsToDraw > 0 && remainingDeck.length > 0) {
+//       const card = remainingDeck.shift();
+
+//       // Determine the card's value, especially for Ace
+//       let cardValue = card.value;
+//       if (card.display.startsWith("A")) {
+//           cardValue = aceValues[card.display] !== undefined ? aceValues[card.display] : 1;
+//       }
+
+//       // Find the bucket (column) whose average is closest to the card's value
+//       let closestBucketIndex = 0;
+//       let minDifference = Math.abs(averages[0] - cardValue);
+
+//       for (let i = 1; i < updatedBuckets.length; i++) {
+//           const difference = Math.abs(averages[i] - cardValue);
+//           if (difference < minDifference) {
+//               closestBucketIndex = i;
+//               minDifference = difference;
+//           }
+//       }
+
+//       // Add the card to the selected bucket
+//       updatedBuckets[closestBucketIndex].push(card);
+
+//       // Recalculate the average for the affected bucket
+//       const newAverage = calculateAverage(updatedBuckets[closestBucketIndex]);
+//       const updatedAverages = [...averages];
+//       updatedAverages[closestBucketIndex] = newAverage;
+//       setAverages(updatedAverages);
+
+//       // If this card was an Ace, store its decided value
+//       if (card.display.startsWith("A") && aceValues[card.display] === undefined) {
+//           setAceValue(card.display, cardValue);
+//       }
+
+//       cardsToDraw--; // Decrement the number of cards left to draw
+//   }
+
+//   setBuckets(updatedBuckets);
+// };
+
+
 const addNextRow = () => {
+  // If no more cards remain, reset the deck and buckets based on the dropdown selection
   if (remainingDeck.length === 0) {
-      alert('No more cards to deal!');
-      return;
+      resetBuckets(selectedColumns); // Reset the deck with the current selection
+      return; // Exit the function to wait for the next button press
   }
 
   const updatedBuckets = [...buckets];
-  let cardsToDraw = selectedColumns; // Number of cards to draw based on the dropdown selection
+  let bucketIndex = 0;
 
-  while (cardsToDraw > 0 && remainingDeck.length > 0) {
-      const card = remainingDeck.shift();
-
-      // Determine the card's value, especially for Ace
-      let cardValue = card.value;
-      if (card.display.startsWith("A")) {
-          cardValue = aceValues[card.display] !== undefined ? aceValues[card.display] : 1;
-      }
-
-      // Find the bucket (column) whose average is closest to the card's value
-      let closestBucketIndex = 0;
-      let minDifference = Math.abs(averages[0] - cardValue);
-
-      for (let i = 1; i < updatedBuckets.length; i++) {
-          const difference = Math.abs(averages[i] - cardValue);
-          if (difference < minDifference) {
-              closestBucketIndex = i;
-              minDifference = difference;
+  // Deal the number of cards matching the number of selected columns
+  for (let i = 0; i < selectedColumns; i++) {
+      if (remainingDeck.length > 0) {
+          const card = remainingDeck.shift();
+          
+          if (card.display.startsWith("A") && aceValues[card.display] === undefined && updatedBuckets[bucketIndex].length > 0) {
+              const currentAverage = averages[bucketIndex];
+              const aceValue = determineAceValue(currentAverage);
+              card.value = aceValue;
+              setAceValue(card.display, aceValue);
           }
+
+          updatedBuckets[bucketIndex].push(card);
+          bucketIndex = (bucketIndex + 1) % updatedBuckets.length;
       }
-
-      // Add the card to the selected bucket
-      updatedBuckets[closestBucketIndex].push(card);
-
-      // Recalculate the average for the affected bucket
-      const newAverage = calculateAverage(updatedBuckets[closestBucketIndex]);
-      const updatedAverages = [...averages];
-      updatedAverages[closestBucketIndex] = newAverage;
-      setAverages(updatedAverages);
-
-      // If this card was an Ace, store its decided value
-      if (card.display.startsWith("A") && aceValues[card.display] === undefined) {
-          setAceValue(card.display, cardValue);
-      }
-
-      cardsToDraw--; // Decrement the number of cards left to draw
   }
 
   setBuckets(updatedBuckets);
-};
 
+  // Update the averages after adding the cards
+  const updatedAverages = updatedBuckets.map(bucket => calculateAverage(bucket));
+  setAverages(updatedAverages);
+};
 
   const handleConfirm = () => {
     const dropdown = document.getElementById("columnDropdown");
