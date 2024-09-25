@@ -1,4 +1,3 @@
-// src/hooks/useAverages.js
 import { useState } from 'react';
 
 const useAverages = () => {
