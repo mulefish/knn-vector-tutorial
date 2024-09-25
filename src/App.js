@@ -111,53 +111,104 @@ const resetBuckets = (n) => {
   //   const updatedAverages = updatedBuckets.map(bucket => calculateAverage(bucket));
   //   setAverages(updatedAverages);
   // };
-  const addNextRow = () => {
-    if (remainingDeck.length === 0) {
-        alert('No more cards to deal!');
-        return;
-    }
+//   const addNextRow = () => {
+//     if (remainingDeck.length === 0) {
+//         alert('No more cards to deal!');
+//         return;
+//     }
 
-    const updatedBuckets = [...buckets];
+//     const updatedBuckets = [...buckets];
 
-    // Process each card from the remaining deck
-    while (remainingDeck.length > 0) {
-        const card = remainingDeck.shift();
+//     // Process each card from the remaining deck
+//     while (remainingDeck.length > 0) {
+//         const card = remainingDeck.shift();
         
-        // Determine the card's value, especially for Ace
-        let cardValue = card.value;
-        if (card.display.startsWith("A")) {
-            cardValue = aceValues[card.display] !== undefined ? aceValues[card.display] : 1;
-        }
+//         // Determine the card's value, especially for Ace
+//         let cardValue = card.value;
+//         if (card.display.startsWith("A")) {
+//             cardValue = aceValues[card.display] !== undefined ? aceValues[card.display] : 1;
+//         }
 
-        // Find the bucket (column) whose average is closest to the card's value
-        let closestBucketIndex = 0;
-        let minDifference = Math.abs(averages[0] - cardValue);
+//         // Find the bucket (column) whose average is closest to the card's value
+//         let closestBucketIndex = 0;
+//         let minDifference = Math.abs(averages[0] - cardValue);
 
-        for (let i = 1; i < updatedBuckets.length; i++) {
-            const difference = Math.abs(averages[i] - cardValue);
-            if (difference < minDifference) {
-                closestBucketIndex = i;
-                minDifference = difference;
-            }
-        }
+//         for (let i = 1; i < updatedBuckets.length; i++) {
+//             const difference = Math.abs(averages[i] - cardValue);
+//             if (difference < minDifference) {
+//                 closestBucketIndex = i;
+//                 minDifference = difference;
+//             }
+//         }
 
-        // Push the card to the bucket with the closest average
-        updatedBuckets[closestBucketIndex].push(card);
+//         // Push the card to the bucket with the closest average
+//         updatedBuckets[closestBucketIndex].push(card);
 
-        // Recalculate the average for the affected bucket
-        const newAverage = calculateAverage(updatedBuckets[closestBucketIndex]);
-        const updatedAverages = [...averages];
-        updatedAverages[closestBucketIndex] = newAverage;
-        setAverages(updatedAverages);
+//         // Recalculate the average for the affected bucket
+//         const newAverage = calculateAverage(updatedBuckets[closestBucketIndex]);
+//         const updatedAverages = [...averages];
+//         updatedAverages[closestBucketIndex] = newAverage;
+//         setAverages(updatedAverages);
 
-        // If this card was an Ace, store its decided value
-        if (card.display.startsWith("A") && aceValues[card.display] === undefined) {
-            setAceValue(card.display, cardValue);
-        }
-    }
+//         // If this card was an Ace, store its decided value
+//         if (card.display.startsWith("A") && aceValues[card.display] === undefined) {
+//             setAceValue(card.display, cardValue);
+//         }
+//     }
 
-    setBuckets(updatedBuckets);
+//     setBuckets(updatedBuckets);
+// };
+
+const addNextRow = () => {
+  if (remainingDeck.length === 0) {
+      alert('No more cards to deal!');
+      return;
+  }
+
+  const updatedBuckets = [...buckets];
+  let cardsToDraw = selectedColumns; // Number of cards to draw based on the dropdown selection
+
+  while (cardsToDraw > 0 && remainingDeck.length > 0) {
+      const card = remainingDeck.shift();
+
+      // Determine the card's value, especially for Ace
+      let cardValue = card.value;
+      if (card.display.startsWith("A")) {
+          cardValue = aceValues[card.display] !== undefined ? aceValues[card.display] : 1;
+      }
+
+      // Find the bucket (column) whose average is closest to the card's value
+      let closestBucketIndex = 0;
+      let minDifference = Math.abs(averages[0] - cardValue);
+
+      for (let i = 1; i < updatedBuckets.length; i++) {
+          const difference = Math.abs(averages[i] - cardValue);
+          if (difference < minDifference) {
+              closestBucketIndex = i;
+              minDifference = difference;
+          }
+      }
+
+      // Add the card to the selected bucket
+      updatedBuckets[closestBucketIndex].push(card);
+
+      // Recalculate the average for the affected bucket
+      const newAverage = calculateAverage(updatedBuckets[closestBucketIndex]);
+      const updatedAverages = [...averages];
+      updatedAverages[closestBucketIndex] = newAverage;
+      setAverages(updatedAverages);
+
+      // If this card was an Ace, store its decided value
+      if (card.display.startsWith("A") && aceValues[card.display] === undefined) {
+          setAceValue(card.display, cardValue);
+      }
+
+      cardsToDraw--; // Decrement the number of cards left to draw
+  }
+
+  setBuckets(updatedBuckets);
 };
+
 
   const handleConfirm = () => {
     const dropdown = document.getElementById("columnDropdown");
@@ -193,7 +244,7 @@ const resetBuckets = (n) => {
             Add more observations
           </Button>
         </HStack>
-
+{/* 
         <div className="card-grid">
           {buckets.map((bucket, index) => (
             <div key={index} className="card-column">
@@ -208,7 +259,38 @@ const resetBuckets = (n) => {
               ))}
             </div>
           ))}
-        </div>
+        </div> */}
+
+
+<div className="card-grid">
+  {buckets.map((bucket, index) => (
+    <div key={index} className="card-column">
+      <Text mb={2}>Average: {averages[index]}</Text>
+      {bucket.map((card, idx) => {
+        // Determine the display for Ace cards with their suit
+        let cardDisplay = card.display;
+        if (card.display.startsWith("A")) {
+          const suitSymbol = card.display.slice(1); // Extract the suit symbol (e.g., "♥", "♠", etc.)
+          if (aceValues[card.display] !== undefined) {
+            cardDisplay = `A  ${suitSymbol} ${aceValues[card.display]}`; // Show Ace with its assigned value and suit
+          } else {
+            cardDisplay = `A ${suitSymbol} ?`; // Show Ace as TBD with its suit if not yet determined
+          }
+        }
+
+        return (
+          <div
+            key={idx}
+            className={`card ${card.display.includes("♥") || card.display.includes("♦") ? 'red' : 'black'}`}
+          >
+            <div className="card-value">{cardDisplay}</div>
+          </div>
+        );
+      })}
+    </div>
+  ))}
+</div>
+
       </Box>
     </ChakraProvider>
   );
