@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 import useCards from './hooks/useCards';
@@ -6,10 +5,12 @@ import useShuffle from './hooks/useShuffle';
 import useAceLogic from './hooks/useAceLogic';
 import useAverages from './hooks/useAverages';
 import useRuns from './hooks/useRuns';
-import { ChakraProvider, Box, Heading, VStack, Text, Button, Select, HStack, Flex } from '@chakra-ui/react';
+import { ChakraProvider, Box, Heading, Text, Button, Select, HStack, Flex } from '@chakra-ui/react';
 import Header from './Header.jsx';
+import Card from './components/Card';
 
 const App = () => {
+
   const { deck } = useCards();
   const { shuffleDeck } = useShuffle();
   const { aceValues, determineAceValue, setAceValue } = useAceLogic();
@@ -31,7 +32,7 @@ const App = () => {
   }, [selectedColumns]);
 
   const startNewRun = (n) => {
-    recordRun(averages, normalizeAverages); // Record the previous run if there was one
+    recordRun(averages, normalizeAverages);
     const shuffledDeck = shuffleDeck(deck);
     const newBuckets = Array.from({ length: n }, () => []);
     
@@ -93,7 +94,7 @@ const App = () => {
     const dropdown = document.getElementById("columnDropdown");
     const selectedValue = dropdown.value;
     setSelectedColumns(parseInt(selectedValue, 10));
-    resetRunHistory(); // Reset the history of runs
+    resetRunHistory();
     startNewRun(parseInt(selectedValue, 10));
   };
 
@@ -111,7 +112,7 @@ const App = () => {
             <option value="5">5 dimensions</option>
           </Select>
 
-          <Button colorScheme="green" onClick={handleConfirm}>
+          <Button colorScheme="blue" onClick={handleConfirm}>
             Change number of dimensions
           </Button>
 
@@ -138,12 +139,7 @@ const App = () => {
               <div key={index} className="card-column">
                 <Text mb={2}>Average: {averages[index]}</Text>
                 {bucket.map((card, idx) => (
-                  <div
-                    key={idx}
-                    className={`card ${card.display.includes("♥") || card.display.includes("♦") ? 'red' : 'black'}`}
-                  >
-                    <div className="card-value">{card.display} {card.value}</div>
-                  </div>
+                  <Card key={idx} card={card} /> // Use the Card component here
                 ))}
               </div>
             ))}
