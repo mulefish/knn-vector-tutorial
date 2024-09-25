@@ -1,20 +1,25 @@
-
 import React, { useState, useEffect } from 'react';
 import './styles.css';
 import useCards from './hooks/useCards';
 import useShuffle from './hooks/useShuffle';
 import useAceLogic from './hooks/useAceLogic';
-import { ChakraProvider, Box, Heading, VStack, Text, Button, Select } from '@chakra-ui/react';
+import { ChakraProvider, Box, Heading, VStack, Text, Button, Select, HStack } from '@chakra-ui/react';
+import Header from './Header.jsx';
 
 const App = () => {
-  const { deck } = useCards(); // Retrieve deck from custom hook
-  const { shuffleDeck } = useShuffle(); // Import shuffle logic
-  const { aceValues, determineAceValue, setAceValue } = useAceLogic(); // Import Ace logic
+  const { deck } = useCards();
+  const { shuffleDeck } = useShuffle();
+  const { aceValues, determineAceValue, setAceValue } = useAceLogic();
   
   const [buckets, setBuckets] = useState([]);
   const [averages, setAverages] = useState([]);
   const [remainingDeck, setRemainingDeck] = useState([]);
-  const [selectedColumns, setSelectedColumns] = useState(null);
+  const [selectedColumns, setSelectedColumns] = useState(3); // Set default columns to 3
+
+  // Initialize the buckets and UI immediately on component mount
+  useEffect(() => {
+    resetBuckets(selectedColumns);
+  }, []); 
 
   useEffect(() => {
     if (selectedColumns) {
@@ -23,7 +28,7 @@ const App = () => {
   }, [selectedColumns]);
 
   const resetBuckets = (n) => {
-    const shuffledDeck = shuffleDeck(deck); // Shuffle the deck using the hook
+    const shuffledDeck = shuffleDeck(deck);
     const newBuckets = Array.from({ length: n }, () => []);
     setBuckets(newBuckets);
     setRemainingDeck([...shuffledDeck]);
@@ -57,9 +62,9 @@ const App = () => {
         
         if (card.display.startsWith("A") && aceValues[card.display] === undefined && updatedBuckets[bucketIndex].length > 0) {
           const currentAverage = averages[bucketIndex];
-          const aceValue = determineAceValue(currentAverage); // Determine the value using the hook
+          const aceValue = determineAceValue(currentAverage);
           card.value = aceValue;
-          setAceValue(card.display, aceValue); // Store the determined value
+          setAceValue(card.display, aceValue);
         }
 
         updatedBuckets[bucketIndex].push(card);
@@ -77,32 +82,40 @@ const App = () => {
     const dropdown = document.getElementById("columnDropdown");
     const selectedValue = dropdown.value;
     setSelectedColumns(parseInt(selectedValue, 10));
+    resetBuckets(parseInt(selectedValue, 10)); // Reset and redraw the UI
   };
 
   return (
     <ChakraProvider>
-      <div className="container">
+      <Header />
+      <Box p={5}>
         <Heading mb={6}>Playing Cards Display</Heading>
         
-        <Select id="columnDropdown" placeholder="Select number of columns" width="200px" mb={4}>
-          <option value="3">3</option>
-          <option value="4">4</option>
-          <option value="5">5</option>
-          <option value="6">6</option>
-        </Select>
-        
-        <Button colorScheme="green" mb={4} onClick={handleConfirm}>
-          Make buckets
-        </Button>
-        
-        <Button colorScheme="blue" mb={4} onClick={addNextRow} disabled={selectedColumns === null}>
-          Add Next Row
-        </Button>
+        {/* Use HStack to place elements on the same row */}
+        <HStack spacing={4} mb={6} align="center">
+          <Select 
+            id="columnDropdown" 
+            defaultValue="3" // Set default value to "3"
+            width="200px"
+          >
+            <option value="3">3 dimensions</option>
+            <option value="4">4 dimensions</option>
+            <option value="5">5 dimensions</option>
+            <option value="6">6 dimensions</option>
+          </Select>
+          
+          <Button colorScheme="green" onClick={handleConfirm}>
+            Change number of dimensions
+          </Button>
+          
+          <Button colorScheme="blue" onClick={addNextRow} disabled={selectedColumns === null}>
+            Add more observations
+          </Button>
+        </HStack>
 
         <div className="card-grid">
           {buckets.map((bucket, index) => (
             <div key={index} className="card-column">
-              <div className="card-column-heading">Bucket {index + 1}</div>
               <Text mb={2}>Average: {averages[index]}</Text>
               {bucket.map((card, idx) => (
                 <div 
@@ -115,7 +128,7 @@ const App = () => {
             </div>
           ))}
         </div>
-      </div>
+      </Box>
     </ChakraProvider>
   );
 };
