@@ -1,0 +1,79 @@
+/* General Container Styles */
+/* .container {
+    padding: 20px;
+    margin: 0 auto;
+    text-align: left; 
+    background-color: #f5f5f5;
+} */
+
+
+.container {
+    padding: 20px;
+    margin: 0 auto;
+    text-align: left;
+    background-color: #f5f5f5;
+}
+
+button {
+    margin-bottom: 10px;
+}
+
+
+/* Grid Styling */
+.card-grid {
+    display: flex;
+    gap: 10px; /* Reduce gap for a tighter layout */
+    justify-content: flex-start; /* Align the grid to the left */
+    margin-top: 20px;
+    padding: 10px;
+}
+
+/* Column Styling */
+.card-column {
+    background-color: #ffffff;
+    padding: 5px; /* Less padding */
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80px; /* Set a width that fits both number and suit side by side */
+    text-align: left; /* Align content to the left */
+}
+
+.card-column-heading {
+    font-size: 0.9rem; /* Smaller font size */
+    font-weight: bold;
+    margin-bottom: 5px; /* Less margin */
+    color: #333;
+}
+
+/* Card Styling */
+.card {
+    padding: 2px; /* Less padding */
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 5px; /* Reduce margin between cards */
+    background-color: #fff;
+    transition: transform 0.3s, box-shadow 0.3s;
+    display: flex; /* Make card container a flex container */
+    align-items: center; /* Center vertically */
+    gap: 5px; /* Space between number and suit */
+    font-size: 1rem; /* Adjust font size */
+}
+
+.card:hover {
+    transform: translateY(-2px); /* Slightly smaller hover effect */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Card Colors */
+.card.red {
+    background-color: #ffebee; /* Light red for hearts/diamonds */
+}
+
+.card.black {
+    background-color: #e3f2fd; /* Light blue for spades/clubs */
+}
+
+.card-value {
+    font-weight: bold;
+    color: #333;
+}
