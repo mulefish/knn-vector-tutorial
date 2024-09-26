@@ -27,7 +27,7 @@ const TextBlock = () => {
           Here’s what you do: you take all the little details—the weight, the skin thickness, the color, maybe even the season they ripen in—and you put all that into a space. A bigger space. You start to notice patterns. Apples and oranges aren’t two things—they’re just points on a map, a map with more dimensions than you and I are used to thinking about.
         </Text>
         <Text fontSize="md" color="gray.700" lineHeight="1.6">
-          And once you’ve got them in that space, that’s when the magic happens. Because suddenly, you can compare them. You can measure how close they are to each other, not just as fruits, but as data. You’re not comparing apples and oranges anymore. You’re comparing numbers, distances, relationships. And that is what KNN is all about; Prepping them for machine learning analysis.
+          And once you’ve got them in that space, that’s when the magic happens. Because suddenly, you can compare them. You can measure how close they are to each other, not just as fruits, but as data. You’re not comparing apples and oranges anymore. You’re comparing numbers, distances, relationships. And that is what KNN is all about; Prepping the data for machine learning analysis.
         </Text>
         <Text fontSize="md" color="gray.700" lineHeight="1.6">
           Now, let’s talk about this little React app I’ve been working on. It’s a toy model of KNN, but instead of apples and oranges, we’re working with a deck of cards. Here’s how it goes:
@@ -42,7 +42,7 @@ const TextBlock = () => {
           By the time we’re done, we’ve created something called a “run” vector, a string of numbers that tells us how the cards were distributed across those dimensions.
         </Text>
         <Text fontSize="md" color="gray.700" lineHeight="1.6">
-          Now, for the toy here the catch is that pulling observations from a smoothly distributed pool of data, like a deck of cards, is almost always going to lead to findings that are about as uninteresting as watching paint dry. That’s not your fault. It’s because the data itself is, well, pretty dull. There’s no drama, no tension, no story to tell. But if the data were less smooth? Then you can find insights hidden in everyday things.
+          Now, for the toy here the catch is that pulling observations from a smoothly distributed pool of data, like a deck of cards, is almost always going to lead to findings that are about as interesting as watching paint dry. That’s not your fault. It’s because the data itself is, well, pretty dull. There’s no drama, no tension, no story to tell. But if the data were less smooth? Then you can find insights hidden in everyday things.
         </Text>
       </VStack>
     </Box>
