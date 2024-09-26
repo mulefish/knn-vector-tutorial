@@ -10,21 +10,28 @@ https://github.com/mulefish/knn-vector-tutorial
 5: First using 'cards' and next use a slightly less simple dataset with more dimensions to show how powerful vecoriztion is   
 
 # COPY
-## An Introduction to KNN: On Comparing Apples, Oranges, and the Strange Power of Vectors
-“You can’t compare apples and oranges!”—they say, as if they’ve got it all figured out. But of course, you can. In fact, that’s one of the great joys of being human: finding similarities where nobody else thought to look. Here’s the trick, though: you’ve got to think beyond your grocery list. You need to start seeing apples and oranges as more than just lunchbox filler—they’re data, my friend, they’re vectors.  
+An Introduction to KNN: On Comparing Apples and Oranges and Machine Learning and Vectors  
   
-Imagine, if you will, that you’re standing in some cosmic fruit aisle, armed with a notepad. Every apple and orange has a story to tell—its weight, how thick its skin is, how red (or orange) it gets, and when it decides it’s ripe and ready for the world. When you jot all that down, you’re not just making a list; you’re turning that apple into a vector. Now that apple’s not just an apple anymore—it’s a point in some abstract, higher-dimensional fruit universe.  
+You can’t compare apples and oranges, they say. But let me tell you something: you absolutely can. You just need to know where to look. The secret is, it’s all about finding the right dimensions.  
   
-And this is where things get interesting. You can toss that apple and orange into this great, multidimensional fruit salad and ask yourself: “Just how similar are they, really?” Suddenly, you find that they’re not so different after all. Maybe they’re closer cousins than you thought, or maybe they’re as distant as two fruits can be. And all you needed to figure that out was to think in terms of vectors.  
+See, most of us go through life assuming things are different, that they have nothing to do with each other. But when you start paying attention, you find out that everything shares a little something. Apples and oranges? Sure, they look different, taste different, grow on different trees, but if you look closer, you’ll see they’re both just data waiting to be understood. I mean, I’m no expert on fruit, but they’re not as far apart as you think.  
   
-Now let’s introduce you to our friend K-Nearest Neighbors (KNN). KNN is like that one neighbor who’s always up in your business, poking around to see who you’re hanging out with and what you’ve been up to. It doesn’t judge—no, it just looks at all the points around you in this fruit universe, checks who your nearest neighbors are, and makes some reasonable assumptions about who you might be.  
+Here’s what you do: you take all the little details—the weight, the skin thickness, the color, maybe even the season they ripen in—and you put all that into a space. A bigger space. You start to notice patterns. Apples and oranges aren’t two things—they’re just points on a map, a map with more dimensions than you and I are used to thinking about.  
   
-You see, KNN’s not fancy; it doesn’t try to be. It’s simple, almost charmingly so. It measures the distance between data points—between vectors—and says, “Hey, if you look like an orange and all your friends are oranges, you’re probably an orange too.” And there you have it: machine learning in a nutshell. Or maybe an orange peel.  
-   
-So, dear reader, if you’ve ever been told you can’t compare apples to oranges, you now have my permission to roll your eyes. Because in the strange, beautiful world of machine learning, everything is comparable if you’ve got the right set of dimensions.
+And once you’ve got them in that space, that’s when the magic happens. Because suddenly, you can compare them. You can measure how close they are to each other, not just as fruits, but as data. You’re not comparing apples and oranges anymore. You’re comparing numbers, distances, relationships. And that, my friend, is what KNN is all about.  
   
-Welcome to the world of KNN and vectors. It’s a wild ride—but trust me, it’s worth it.
+Now, let’s talk about this little React app I’ve been working on. It’s a toy model of KNN, but instead of apples and oranges, we’re working with a deck of cards. Here’s how it goes:  
   
+First, we start by picking N cards from the deck, one for each column—our “dimensions,” if you will. These cards give us our initial space to work with, just like laying down that first map.  
+  
+Then, we draw another N cards, one by one, and place them in whichever “bucket” is closest in value. It’s like finding where that card fits best in our little universe, which dimension it belongs to. And we keep doing this, card by card, until the deck is completely empty.  
+  
+By the time we’re done, we’ve created something called a “run” vector, a string of numbers that tells us how the cards were distributed across those dimensions, in a Machine Learniing friendly manner.    
+  
+And there it is—a playful little dance of data, a tiny universe of cards falling into place, each one finding its home. It’s a simple way to show how KNN takes something that looks like chaos and finds the hidden structure. It’s all about figuring out where things fit, how they’re more alike than you’d ever think, and turning that understanding into something useful. You got this.  
+
+
+
 
 # Screenshot
 ![Description of the image](./screen_knn.png)
