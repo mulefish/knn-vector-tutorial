@@ -100,7 +100,7 @@ const App = () => {
     <ChakraProvider>
       <Header />
       <Box p={5}>
-        <Heading mb={6} fontSize="lg">KNN with a deck of cards Eeboo </Heading>
+        <Heading mb={6} fontSize="lg">KNN with a deck of cards</Heading>
 
         <HStack spacing={4} mb={6} align="center">
           <Select id="columnDropdown" defaultValue="6" width="200px">
