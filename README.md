@@ -27,7 +27,7 @@ Then, we draw another N cards, one by one, and place them in whichever “bucket
   
 By the time we’re done, we’ve created something called a “run” vector, a string of numbers that tells us how the cards were distributed across those dimensions.  
   
-Now, for the toy here the catch is that pulling observations from a smoothly distributed pool of data, like a deck of cards, is almost always going to lead to findings that are about as uninteresting as watching paint dry. That’s not your fault. It’s because the data itself is, well, pretty dull. There’s no drama, no tension, no story to tell. But if there were the data were less smooth? Then you can find insights hidden in everyday things. 
+Now, for the toy here the catch is that pulling observations from a smoothly distributed pool of data, like a deck of cards, is almost always going to lead to findings that are about as uninteresting as watching paint dry. That’s not your fault. It’s because the data itself is, well, pretty dull. There’s no drama, no tension, no story to tell. But if the data were less smooth? Then you can find insights hidden in everyday things. 
 
 
 

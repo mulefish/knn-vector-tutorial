@@ -10,7 +10,8 @@ import { addRun as recordRun, resetHistory as resetRunHistory } from './redux/ru
 import { ChakraProvider, Box, Heading, Text, Button, Select, HStack, Flex } from '@chakra-ui/react';
 import Header from './Header.jsx';
 import Card from './components/Card';
-import RunHistoryChart from './components/RunHistoryChart'; // Import the chart component
+import RunHistoryChart from './components/RunHistoryChart';
+import TextBlock from './components/CopyText';
 
 const App = () => {
   const { deck } = useCards();
@@ -104,6 +105,7 @@ const App = () => {
   return (
     <ChakraProvider>
       <Header />
+      <TextBlock />
       <Box p={5}>
         <Heading mb={6} fontSize="lg">KNN with a deck of cards</Heading>
 
