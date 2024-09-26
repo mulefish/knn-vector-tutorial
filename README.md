@@ -9,8 +9,7 @@ https://github.com/mulefish/knn-vector-tutorial
 4: Discuss why that is nice  
 5: First using 'cards' and next use a slightly less simple dataset with more dimensions to show how powerful vecoriztion is   
 
-# COPY
-An Introduction to KNN: On Comparing Apples and Oranges and Machine Learning and Vectors  
+# An Introduction to KNN: On Comparing Apples and Oranges and Machine Learning and Vectors  
   
 You can’t compare apples and oranges, they say. But let me tell you something: you absolutely can. You just need to know where to look. The secret is, it’s all about finding the right dimensions.  
   
