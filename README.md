@@ -36,4 +36,4 @@ And there it is—a playful little dance of data, a tiny universe of cards falli
 ![Description of the image](./screen_knn.png)
 
 # TODO
-DISCUSSION with words! Compare Apples and Oranges!
+We have cards here, as a super simple example. Next: more complexity. 
