@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// src/App.js
+import React, { useState, useEffect, useCallback } from 'react';
 import './styles.css';
 import useCards from './hooks/useCards';
 import useShuffle from './hooks/useShuffle';
@@ -10,7 +11,6 @@ import Header from './Header.jsx';
 import Card from './components/Card';
 
 const App = () => {
-
   const { deck } = useCards();
   const { shuffleDeck } = useShuffle();
   const { aceValues, determineAceValue, setAceValue } = useAceLogic();
@@ -21,21 +21,13 @@ const App = () => {
   const [remainingDeck, setRemainingDeck] = useState([]);
   const [selectedColumns, setSelectedColumns] = useState(6);
 
-  useEffect(() => {
-    startNewRun(selectedColumns);
-  }, []);
-
-  useEffect(() => {
-    if (selectedColumns) {
-      startNewRun(selectedColumns);
-    }
-  }, [selectedColumns]);
-
-  const startNewRun = (n) => {
+  // Memoized function to avoid unnecessary recreations
+  const startNewRun = useCallback((n) => {
     recordRun(averages, normalizeAverages);
     const shuffledDeck = shuffleDeck(deck);
     const newBuckets = Array.from({ length: n }, () => []);
-    
+
+    // Ensure each bucket gets a unique card initially
     let uniqueCards = [];
     while (uniqueCards.length < n && shuffledDeck.length > 0) {
       const card = shuffledDeck.shift();
@@ -51,7 +43,13 @@ const App = () => {
     setBuckets(newBuckets);
     setRemainingDeck([...shuffledDeck]);
     setAverages(uniqueCards.map(card => card.value));
-  };
+  }, [shuffleDeck, deck, averages, normalizeAverages, recordRun, setAverages]);
+
+  // Initialize on component mount
+  useEffect(() => {
+    startNewRun(selectedColumns);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedColumns]);
 
   const addNextRow = () => {
     if (remainingDeck.length === 0) {
@@ -102,7 +100,7 @@ const App = () => {
     <ChakraProvider>
       <Header />
       <Box p={5}>
-        <Heading mb={6} fontSize="lg">KNN with a deck of cards</Heading>
+        <Heading mb={6} fontSize="lg">KNN with a deck of cards Eeboo </Heading>
 
         <HStack spacing={4} mb={6} align="center">
           <Select id="columnDropdown" defaultValue="6" width="200px">
