@@ -5,16 +5,16 @@ import { Box, Heading, Text, VStack } from '@chakra-ui/react';
 const TextBlock = () => {
   return (
     <Box
-      bg="teal.50"
+      bg="white.50"
       p={8}
       borderRadius="md"
       boxShadow="lg"
-      maxW="4xl"
-      mx="auto"
-      my={6}
+      w="100%"             // Set the width to 100%
+      borderBottom="1px solid" 
+      borderColor="gray.200" // Adding a bottom border for separation
     >
-      <VStack spacing={4} align="start">
-        <Heading as="h2" size="lg" color="teal.800">
+      <VStack spacing={4} align="start" maxW="1200px" mx="auto">  {/* Ensures text stays centered within a max width */}
+        <Heading as="h2" size="lg" color="teal.800" textAlign="center" w="100%">
           Chakra: An Introduction to KNN: On Comparing Apples and Oranges and Machine Learning and Vectors
         </Heading>
         <Text fontSize="md" color="gray.700" lineHeight="1.6">
