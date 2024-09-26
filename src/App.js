@@ -1,11 +1,11 @@
-// src/App.js
 import React, { useState, useEffect, useCallback } from 'react';
 import './styles.css';
 import useCards from './hooks/useCards';
 import useShuffle from './hooks/useShuffle';
 import useAceLogic from './hooks/useAceLogic';
 import useAverages from './hooks/useAverages';
-import useRuns from './hooks/useRuns';
+import { useSelector, useDispatch } from 'react-redux';
+import { addRun as recordRun, resetHistory as resetRunHistory } from './redux/runHistorySlice';
 import { ChakraProvider, Box, Heading, Text, Button, Select, HStack, Flex } from '@chakra-ui/react';
 import Header from './Header.jsx';
 import Card from './components/Card';
@@ -15,7 +15,9 @@ const App = () => {
   const { shuffleDeck } = useShuffle();
   const { aceValues, determineAceValue, setAceValue } = useAceLogic();
   const { averages, setAverages, calculateAverage, normalizeAverages } = useAverages();
-  const { runHistory, recordRun, resetRunHistory } = useRuns();
+
+  const runHistory = useSelector((state) => state.runHistory.history);
+  const dispatch = useDispatch();
 
   const [buckets, setBuckets] = useState([]);
   const [remainingDeck, setRemainingDeck] = useState([]);
@@ -23,11 +25,13 @@ const App = () => {
 
   // Memoized function to avoid unnecessary recreations
   const startNewRun = useCallback((n) => {
-    recordRun(averages, normalizeAverages);
+    if (averages.length > 0) {
+      dispatch(recordRun(normalizeAverages(averages))); // Record the run only if there are averages
+    }
+
     const shuffledDeck = shuffleDeck(deck);
     const newBuckets = Array.from({ length: n }, () => []);
 
-    // Ensure each bucket gets a unique card initially
     let uniqueCards = [];
     while (uniqueCards.length < n && shuffledDeck.length > 0) {
       const card = shuffledDeck.shift();
@@ -43,13 +47,22 @@ const App = () => {
     setBuckets(newBuckets);
     setRemainingDeck([...shuffledDeck]);
     setAverages(uniqueCards.map(card => card.value));
-  }, [shuffleDeck, deck, averages, normalizeAverages, recordRun, setAverages]);
+  }, [dispatch, shuffleDeck, deck, averages, normalizeAverages, setAverages]);
 
   // Initialize on component mount
   useEffect(() => {
     startNewRun(selectedColumns);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedColumns]);
+  }, []);
+
+  // Only reset when `selectedColumns` changes
+  const handleConfirm = () => {
+    const dropdown = document.getElementById("columnDropdown");
+    const selectedValue = parseInt(dropdown.value, 10);
+    setSelectedColumns(selectedValue);
+    dispatch(resetRunHistory()); // Reset Redux history
+    startNewRun(selectedValue);
+  };
 
   const addNextRow = () => {
     if (remainingDeck.length === 0) {
@@ -88,14 +101,6 @@ const App = () => {
     setAverages(updatedAverages);
   };
 
-  const handleConfirm = () => {
-    const dropdown = document.getElementById("columnDropdown");
-    const selectedValue = dropdown.value;
-    setSelectedColumns(parseInt(selectedValue, 10));
-    resetRunHistory();
-    startNewRun(parseInt(selectedValue, 10));
-  };
-
   return (
     <ChakraProvider>
       <Header />
@@ -122,13 +127,13 @@ const App = () => {
         <Flex justify="space-between" align="flex-start">
           <Box mr={4} p={3} border="1px" borderColor="gray.300" borderRadius="md" boxShadow="md">
             <Text fontWeight="bold" mb={2}>Current Normalized Vector:</Text>
-            <Text fontSize="sm">[{normalizeAverages(averages).join(', ')}]</Text>
+            <Text fontSize="sm">[{normalizeAverages(averages || []).join(', ')}]</Text>
             {runHistory.length > 0 ? (
               runHistory.map((vector, index) => (
                 <Text key={index} fontSize="sm">Run {index + 1}: [{vector.join(', ')}]</Text>
               ))
             ) : (
-              <Text></Text>
+              <Text>No run history</Text>
             )}
           </Box>
 
@@ -137,7 +142,7 @@ const App = () => {
               <div key={index} className="card-column">
                 <Text mb={2}>Average: {averages[index]}</Text>
                 {bucket.map((card, idx) => (
-                  <Card key={idx} card={card} /> // Use the Card component here
+                  <Card key={idx} card={card} />
                 ))}
               </div>
             ))}
