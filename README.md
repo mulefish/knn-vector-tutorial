@@ -9,9 +9,9 @@ https://github.com/mulefish/knn-vector-tutorial
 4: Discuss why that is nice  
 5: First using 'cards' and next use a slightly less simple dataset with more dimensions to show how powerful vecoriztion is   
 
-# TODO
-1: Vecorize 
-2: Less dummy example   
-3: Silly line graph
+# Screenshot
+![Description of the image](./screen_knn.png)
 
+# TODO
+DISCUSSION with words! Compare Apples and Oranges!
 
