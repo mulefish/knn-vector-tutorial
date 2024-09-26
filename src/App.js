@@ -26,7 +26,7 @@ const App = () => {
   // Memoized function to avoid unnecessary recreations
   const startNewRun = useCallback((n) => {
     if (averages.length > 0) {
-      dispatch(recordRun(normalizeAverages(averages))); // Record the run only if there are averages
+      dispatch(recordRun(normalizeAverages(averages)));
     }
 
     const shuffledDeck = shuffleDeck(deck);
@@ -52,15 +52,13 @@ const App = () => {
   // Initialize on component mount
   useEffect(() => {
     startNewRun(selectedColumns);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []); // Empty dependency array to run only on mount
 
-  // Only reset when `selectedColumns` changes
   const handleConfirm = () => {
     const dropdown = document.getElementById("columnDropdown");
     const selectedValue = parseInt(dropdown.value, 10);
     setSelectedColumns(selectedValue);
-    dispatch(resetRunHistory()); // Reset Redux history
+    dispatch(resetRunHistory());
     startNewRun(selectedValue);
   };
 
@@ -101,6 +99,11 @@ const App = () => {
     setAverages(updatedAverages);
   };
 
+  // Function to log the Redux state
+  const logReduxState = () => {
+    console.log("Current Redux State:", runHistory);
+  };
+
   return (
     <ChakraProvider>
       <Header />
@@ -121,6 +124,11 @@ const App = () => {
 
           <Button colorScheme="blue" onClick={addNextRow} disabled={selectedColumns === null}>
             Add more observations
+          </Button>
+
+          {/* Button to log Redux state */}
+          <Button colorScheme="red" onClick={logReduxState}>
+            Log Redux State
           </Button>
         </HStack>
 
