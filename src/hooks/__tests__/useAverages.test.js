@@ -1,4 +1,5 @@
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react'; // Using renderHook with react-testing-library for testing hooks
+
 import useAverages from '../useAverages';
 
 describe('useAverages hook', () => {

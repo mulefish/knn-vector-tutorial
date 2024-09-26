@@ -6,7 +6,7 @@ import useShuffle from './hooks/useShuffle';
 import useAceLogic from './hooks/useAceLogic';
 import useAverages from './hooks/useAverages';
 import { useDispatch, useSelector } from 'react-redux';
-import { addRun as recordRun, resetHistory as resetRunHistory } from './redux/runHistorySlice';
+import { addRun as recordRun, resetHistory as resetRunHistory } from './redux/runHistory/runHistorySlice';
 import { ChakraProvider, Box, Heading, Text, Button, Select, HStack, Flex } from '@chakra-ui/react';
 import Header from './Header.jsx';
 import Card from './components/Card';
@@ -120,7 +120,7 @@ const App = () => {
           </Button>
 
           <Button colorScheme="blue" onClick={addNextRow} disabled={selectedColumns === null}>
-            Add more observations
+            Add more observations ( click many times to cycle threw the deck)
           </Button>
         </HStack>
 

@@ -1,4 +1,10 @@
 // src/components/RunHistoryChart.jsx
+
+/* 
+ERROR
+ could not find react-redux context value; please ensure the component is wrapped in a <Provider>
+ */ 
+
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 
